@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Result</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+
+  <style>
+    .score {
+      font-size: 60px;
+      font-weight: bold;
+      margin: 20px 0;
+      color: var(--secondary);
+    }
+
+    .gaps {
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    .gap-item {
+      background: var(--bg-card);
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-card);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container fade-in">
+    <div class="card">
+      <h1>Your Result</h1>
+
+      <div class="score" id="score">0%</div>
+
+      <p id="feedback">Analyzing your answers...</p>
+
+      <div class="gaps" id="gapsContainer"></div>
+
+      <div class="actions">
+        <button class="btn" onclick="restart()">Try Again</button>
+        <button class="btn btn-secondary" onclick="uploadAgain()">Upload Another CV</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { submitAnswers } from "./js/api.js";
+    import { loadState, state, setResult, resetState } from "./js/state.js";
+
+    const scoreEl = document.getElementById("score");
+    const gapsContainer = document.getElementById("gapsContainer");
+    const feedback = document.getElementById("feedback");
+
+    loadState();
+
+    // ===== Animate Score =====
+    function animateScore(finalScore) {
+      let current = 0;
+
+      const interval = setInterval(() => {
+        current++;
+        scoreEl.innerText = current + "%";
+
+        if (current >= finalScore) {
+          clearInterval(interval);
+        }
+      }, 15);
+    }
+
+    // ===== Load Result =====
+    async function loadResult() {
+      try {
+        const data = await submitAnswers(state.answers);
+
+        setResult(data);
+
+        animateScore(data.score);
+
+        feedback.innerText = "Here is your performance";
+
+        gapsContainer.innerHTML = "<h3>Missing Skills:</h3>";
+
+        data.gaps.forEach(gap => {
+          const div = document.createElement("div");
+          div.className = "gap-item";
+          div.innerText = gap;
+          gapsContainer.appendChild(div);
+        });
+
+      } catch (err) {
+        feedback.innerText = "Something went wrong...";
+        console.error(err);
+      }
+    }
+
+    // ===== Restart Quiz =====
+    window.restart = function () {
+      state.answers = [];
+      window.location.href = "quiz.html";
+    };
+
+    // ===== Upload New CV =====
+    window.uploadAgain = function () {
+      resetState();
+      window.location.href = "index.html";
+    };
+
+    loadResult();
+  </script>
+
+</body>
+</html>

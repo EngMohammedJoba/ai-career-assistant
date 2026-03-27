@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+
+  <style>
+    .progress-bar {
+      height: 6px;
+      background: var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 15px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--primary);
+      transition: width 0.3s ease;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 15px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container fade-in">
+    <div class="card">
+
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+
+      <h2 id="questionText"></h2>
+
+      <div id="answersContainer"></div>
+
+      <button class="btn" id="nextBtn">Next</button>
+
+    </div>
+  </div>
+
+  <script type="module">
+    import { getQuiz } from "./js/api.js";
+    import { loadState, state, setQuiz, addAnswer } from "./js/state.js";
+
+    const questionText = document.getElementById("questionText");
+    const answersContainer = document.getElementById("answersContainer");
+    const nextBtn = document.getElementById("nextBtn");
+    const progressFill = document.getElementById("progressFill");
+
+    let currentIndex = 0;
+
+    loadState();
+
+    async function initQuiz() {
+      const data = await getQuiz(state.selectedRole);
+      setQuiz(data);
+      loadQuestion();
+    }
+
+    function updateProgress() {
+      const percent = ((currentIndex) / state.quiz.length) * 100;
+      progressFill.style.width = percent + "%";
+    }
+
+    function loadQuestion() {
+      const q = state.quiz[currentIndex];
+
+      updateProgress();
+
+      questionText.innerText = q.question;
+      answersContainer.innerHTML = "";
+
+      if (q.type === "text") {
+        const input = document.createElement("input");
+        input.id = "answerInput";
+        answersContainer.appendChild(input);
+      }
+
+      if (q.type === "mcq") {
+        q.options.forEach(opt => {
+          const btn = document.createElement("button");
+          btn.className = "btn";
+          btn.style.display = "block";
+          btn.style.marginTop = "10px";
+          btn.innerText = opt;
+
+          btn.onclick = () => {
+            document.querySelectorAll("#answersContainer button")
+              .forEach(b => b.style.background = "var(--primary)");
+
+            btn.style.background = "var(--secondary)";
+            btn.dataset.selected = "true";
+          };
+
+          answersContainer.appendChild(btn);
+        });
+      }
+    }
+
+    nextBtn.addEventListener("click", () => {
+      const q = state.quiz[currentIndex];
+
+      let answer = null;
+
+      if (q.type === "text") {
+        answer = document.getElementById("answerInput").value;
+        if (!answer) return alert("Write your answer");
+      }
+
+      if (q.type === "mcq") {
+        const selected = document.querySelector("[data-selected='true']");
+        if (!selected) return alert("Choose an answer");
+        answer = selected.innerText;
+      }
+
+      addAnswer(answer);
+
+      currentIndex++;
+
+      if (currentIndex < state.quiz.length) {
+        loadQuestion();
+      } else {
+        document.body.style.opacity = "0";
+        setTimeout(() => {
+          window.location.href = "result.html";
+        }, 300);
+      }
+    });
+
+    initQuiz();
+  </script>
+
+</body>
+</html>

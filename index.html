@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Career Assistant</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+
+  <style>
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #ef4444;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 10px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: 0.3s;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container fade-in">
+    <div class="card">
+      <h1>Upload Your CV</h1>
+      <p>Start your AI career journey</p>
+
+      <div class="upload-box" id="uploadBox">
+        <p id="fileText">Click or drag your CV here</p>
+        <input type="file" id="fileInput" hidden>
+      </div>
+
+      <button class="btn" id="uploadBtn">Analyze CV</button>
+
+      <div class="loader" id="loader"></div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast">Error</div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

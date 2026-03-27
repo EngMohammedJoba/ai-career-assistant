@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Roles</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+  <div class="container fade-in">
+    <h1>Recommended Roles</h1>
+    <p>Select a role to start your test</p>
+
+    <div id="rolesContainer"></div>
+  </div>
+
+  <script type="module">
+    import { getRoles } from "./js/api.js";
+    import { loadState, state, setRoles, setSelectedRole } from "./js/state.js";
+
+    const container = document.getElementById("rolesContainer");
+
+    loadState();
+
+    function showSkeleton() {
+      container.innerHTML = "";
+
+      for (let i = 0; i < 3; i++) {
+        const sk = document.createElement("div");
+        sk.className = "card skeleton";
+        sk.style.height = "100px";
+        container.appendChild(sk);
+      }
+    }
+
+    async function loadRolesPage() {
+      showSkeleton();
+
+      try {
+        const data = await getRoles(state.cv?.skills || []);
+
+        setRoles(data);
+
+        container.innerHTML = "";
+
+        data.roles.forEach(role => {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.style.marginTop = "20px";
+
+          card.innerHTML = `
+            <h3>${role.title}</h3>
+            <p>Match Score: ${Math.round(role.score * 100)}%</p>
+            <button class="btn">Start Test</button>
+          `;
+
+          card.querySelector("button").onclick = () => {
+            setSelectedRole(role.title);
+            window.location.href = "quiz.html";
+          };
+
+          container.appendChild(card);
+        });
+
+      } catch (err) {
+        container.innerHTML = "<p>Failed to load roles</p>";
+      }
+    }
+
+    loadRolesPage();
+  </script>
+
+</body>
+</html>
