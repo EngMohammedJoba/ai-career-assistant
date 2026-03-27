@@ -27,16 +27,16 @@ An intelligent web application that analyzes your CV, recommends suitable roles,
 ## 📸 Screenshots
 
 ### 📄 Upload
-<img src="screenshots/upload.png" width="800"/>
+<img src="screenshots/Upload.png" width="800"/>
 
 ### 🎯 Roles
-<img src="screenshots/roles.png" width="800"/>
+<img src="screenshots/Roles.png" width="800"/>
 
 ### 🧠 Quiz
-<img src="screenshots/quiz.png" width="800"/>
+<img src="screenshots/Quiz.png" width="800"/>
 
 ### 📊 Result
-<img src="screenshots/result.png" width="800"/>
+<img src="screenshots/Result.png" width="800"/>
 ## 🚀 Live Demo
 (https://ai-career-assistant-sultan.netlify.app/)
 
