@@ -13,13 +13,17 @@
     }
 
     .hero h1 {
-      font-size: 40px;
+      font-size: 42px;
       margin-bottom: 10px;
+      background: linear-gradient(135deg, #6366f1, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .hero p {
       font-size: 18px;
       margin-bottom: 25px;
+      color: var(--text-muted);
     }
 
     .features {
@@ -30,8 +34,24 @@
 
     .feature {
       padding: 15px;
-      border-radius: 10px;
+      border-radius: 12px;
       background: rgba(255,255,255,0.05);
+      transition: 0.3s;
+    }
+
+    .feature:hover {
+      transform: translateY(-5px);
+      background: rgba(99,102,241,0.1);
+    }
+
+    .cta {
+      margin-top: 25px;
+    }
+
+    .footer {
+      margin-top: 30px;
+      font-size: 13px;
+      color: var(--text-muted);
     }
   </style>
 </head>
@@ -41,15 +61,26 @@
     <div class="card hero">
 
       <h1>AI Career Assistant 🚀</h1>
-      <p>Analyze your CV, discover best roles, test your skills, and improve.</p>
 
-      <button class="btn" onclick="start()">Get Started</button>
+      <p>
+        Discover your ideal career path using AI.  
+        Upload your CV, explore matching roles, test your skills,  
+        and identify what you need to improve.
+      </p>
+
+      <div class="cta">
+        <button class="btn" onclick="start()">Get Started</button>
+      </div>
 
       <div class="features">
-        <div class="feature">📄 Smart CV Analysis</div>
-        <div class="feature">🎯 Role Recommendation</div>
-        <div class="feature">🧠 AI Quiz Generation</div>
-        <div class="feature">📊 Skill Gap Detection</div>
+        <div class="feature">📄 Analyze your CV automatically</div>
+        <div class="feature">🎯 Get personalized role recommendations</div>
+        <div class="feature">🧠 Take AI-generated quizzes</div>
+        <div class="feature">📊 Identify your skill gaps instantly</div>
+      </div>
+
+      <div class="footer">
+        Built to help you grow faster in your tech career 💡
       </div>
 
     </div>
@@ -57,7 +88,10 @@
 
   <script>
     function start() {
-      window.location.href = "index.html";
+      document.body.style.opacity = "0";
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 300);
     }
   </script>
 

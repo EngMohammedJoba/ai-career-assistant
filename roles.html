@@ -30,7 +30,7 @@
       for (let i = 0; i < 3; i++) {
         const sk = document.createElement("div");
         sk.className = "card skeleton";
-        sk.style.height = "100px";
+        sk.style.height = "120px";
         container.appendChild(sk);
       }
     }
@@ -53,6 +53,15 @@
           card.innerHTML = `
             <h3>${role.title}</h3>
             <p>Match Score: ${Math.round(role.score * 100)}%</p>
+
+            <p style="color: lightgreen;">
+              ✔ ${role.matchedSkills.join(", ") || "No matched skills"}
+            </p>
+
+            <p style="color: #f87171;">
+              ✖ ${role.missingSkills.join(", ") || "No missing skills"}
+            </p>
+
             <button class="btn">Start Test</button>
           `;
 
@@ -66,6 +75,7 @@
 
       } catch (err) {
         container.innerHTML = "<p>Failed to load roles</p>";
+        console.error(err);
       }
     }
 
