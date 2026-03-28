@@ -93,3 +93,20 @@ uploadBtn.addEventListener("click", async () => {
     loader.style.display = "none";
   }
 });
+
+
+// ===== Page Transition =====
+document.querySelectorAll("a, button").forEach(el => {
+  el.addEventListener("click", function (e) {
+    const href = this.getAttribute("href");
+
+    if (href && href.includes(".html")) {
+      e.preventDefault();
+      document.body.classList.add("fade-out");
+
+      setTimeout(() => {
+        window.location.href = href;
+      }, 300);
+    }
+  });
+});
