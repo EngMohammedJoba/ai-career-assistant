@@ -37,8 +37,7 @@ An intelligent web application that analyzes your CV, recommends suitable roles,
 
 ### 📊 Result
 <img src="screenshots/Result.png" width="800"/>
-## 🚀 Live Demo
-(https://ai-career-assistant-sultan.netlify.app/)
+
 
 ## 💡 Future Work
 - Real Backend Integration
